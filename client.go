@@ -60,6 +60,7 @@ type Client interface {
 	SubscribeMultiple(filters map[string]byte, callback MessageHandler) Token
 	Unsubscribe(topics ...string) Token
 	AddRoute(topic string, callback MessageHandler)
+	GetClientID() string
 }
 
 // client implements the Client interface
@@ -111,6 +112,12 @@ func NewClient(o *ClientOptions) Client {
 		c.options.MessageChannelDepth = 0
 	}
 	return c
+}
+
+// GetClientID returns the client id
+// The Client id is defined via ClientOptions and there's no way to access it given a client
+func (c *client) GetClientID() string {
+	return c.options.ClientID
 }
 
 func (c *client) AddRoute(topic string, callback MessageHandler) {
